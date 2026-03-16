@@ -76,7 +76,8 @@ storage/chat_<chat_id>.json
 Функциональность находится в разработке.
 
 #### Архитектура проекта
-```project
+```
+project
 │
 ├── main.py
 │
@@ -94,7 +95,8 @@ storage/chat_<chat_id>.json
 │
 ├── static
 │
-└── README.md```
+└── README.md
+```
 
 'main.py'
 
