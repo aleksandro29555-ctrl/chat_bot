@@ -1,0 +1,99 @@
+/* Базовая сетка: Sidebar слева, Chat справа */
+body {
+    display: flex;
+    height: 100vh;
+    margin: 0;
+    font-family: sans-serif;
+}
+
+/* Левая колонка (Список чатов) */
+#sidebar {
+    width: 260px;
+    background-color: #202123;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    border-right: 1px solid #444;
+}
+
+/* Правая колонка (Основной чат) */
+#chat-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+}
+
+/* Область истории сообщений */
+#messages-history {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Нижняя область ввода */
+#input-area {
+    padding: 20px;
+    display: flex;
+    gap: 10px;
+    background-color: #f9f9f9;
+}
+
+#user-input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.chat-item {
+    padding: 10px;
+    margin: 5px 0;
+    background: #343541;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.chat-item:hover {
+    background: #444654;
+}
+#new-chat-btn {
+    background: #10a37f; /* Зеленая кнопка как у ChatGPT */
+    text-align: center;
+    font-weight: bold;
+}
+
+.chat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin: 5px 0;
+    background: #343541;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.delete-btn {
+    color: #ff4d4d;
+    font-weight: bold;
+    padding: 0 5px;
+    opacity: 0.3;
+    transition: opacity 0.2s;
+}
+
+.chat-item:hover .delete-btn {
+    opacity: 1;
+}
+
+.delete-btn:hover {
+    color: #ff0000;
+    transform: scale(1.2);
+}
