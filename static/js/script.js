@@ -2,6 +2,16 @@ let currentChatId = null;
 const historyContainer = document.getElementById('messages-history');
 const userInput = document.getElementById('user-input');
 
+async function greetUser() {
+    const response = await fetch('/get_user_info');
+    const settings = await response.json();
+    
+    // Если мы в новом чате и там еще нет сообщений - выводим приветствие
+    if (historyContainer.children.length === 0) {
+        appendMessage('bot', `Привет, ${settings.user_name}! Чем могу помочь сегодня?`);
+    }
+}
+
 function appendMessage(sender, text) {
     const messageDiv = document.createElement('div');
     messageDiv.className = 'message';
@@ -100,6 +110,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const input = document.getElementById('user-input');
     const history = document.getElementById('messages-history');
 
+    loadChatList();
+
+    (async () => {
+        try {
+            const response = await fetch('/get_user_info');
+            const settings = await response.json();
+            
+            // Здороваемся только если чат пустой (новый)
+            if (history.children.length === 0) {
+                appendMessage('Бот', `Привет, ${settings.user_name}! Чем могу помочь?`);
+            }
+        } catch (e) {
+            console.error("Не удалось получить настройки пользователя");
+        }
+    })();
+
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         const text = input.value.trim();
@@ -134,5 +160,3 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
-
-loadChatList();

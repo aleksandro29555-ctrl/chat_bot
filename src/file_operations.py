@@ -2,6 +2,8 @@ import json
 import os
 import glob
 
+SETTINGS_FILE = 'storage/settings.json'
+
 def get_all_chats():
     """Возвращает список ID всех существующих чатов (имена файлов без .json)."""
     files = glob.glob('storage/chat_*.json')
@@ -57,3 +59,16 @@ def delete_json_file(file_path):
     except OSError as e:
         print(f"Ошибка при удалении файла {file_path}: {e}")
         return False
+    
+def get_settings():
+    settings = read_json(SETTINGS_FILE)
+    if not settings:
+        # Дефолтные настройки, если файла нет
+        settings = {"user_name": "Гость", "language": "ru"}
+        write_json(SETTINGS_FILE, settings)
+    return settings
+
+def update_settings(new_data):
+    settings = get_settings()
+    settings.update(new_data)
+    write_json(SETTINGS_FILE, settings)

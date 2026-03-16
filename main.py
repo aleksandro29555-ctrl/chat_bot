@@ -1,12 +1,14 @@
 from flask import Flask, render_template, request, jsonify
-from src.conditions import get_bot_response  # Импортируем нашу логику
+from src.conditions import get_bot_response, check_commands  # Импортируем нашу логику
 from src.functions import process_mathematics  # Импортируем функцию для обработки математики
-from src.file_operations import read_json, append_to_history, get_all_chats, delete_json_file  # Импортируем функции для работы с историей
+from src.file_operations import read_json, append_to_history, get_all_chats, delete_json_file, get_settings, update_settings  # Импортируем функции для работы с историей
 import uuid
 
 app = Flask(__name__)
 
-HISTORY_PATH = 'storage/chat_history.json'
+@app.route('/get_user_info', methods=['GET'])
+def get_user_info():
+    return jsonify(get_settings())
 
 @app.route('/get_chats', methods=['GET'])
 def list_chats():
@@ -52,13 +54,18 @@ def get_response():
     if not chat_id:
         chat_id = str(uuid.uuid4())[:8]  # Генерируем короткий ID для нового чата
     
-    bot_reply = get_bot_response(user_message)
-    # Вызываем логику из conditions.py
-    if bot_reply is None:
-        bot_reply = process_mathematics(user_message)
+    settings_update, command_reply = check_commands(user_message)
+    if settings_update:
+        update_settings(settings_update)
+        bot_reply = command_reply
+    else:
+        bot_reply = get_bot_response(user_message)
+        # Вызываем логику из conditions.py
+        if bot_reply is None:
+            bot_reply = process_mathematics(user_message)
 
-    if bot_reply is None:
-        bot_reply = "Извини, я пока не знаю, как на это ответить."
+        if bot_reply is None:
+            bot_reply = "Извини, я пока не знаю, как на это ответить."
     
     chat_path = f'storage/chat_{chat_id}.json'
     # Сохраняем в историю
